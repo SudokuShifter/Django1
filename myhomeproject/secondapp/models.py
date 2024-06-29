@@ -109,7 +109,7 @@ class Order(models.Model):
                 print('Пришла поставка')
             else:
                 i.quantity -= 1
-                i.save()
+            i.save()
 
     @staticmethod
     def get_orders():
