@@ -2,7 +2,11 @@ from django.db import models
 from django.utils import timezone
 from faker import Faker
 from random import randint, choice, choices
+from datetime import date, timedelta
+
 FAKE = Faker('ru_RU')
+
+
 # Create your models here.
 
 
@@ -24,7 +28,8 @@ class Client(models.Model):
         client = Client(name=FAKE.first_name(),
                         email=FAKE.email(),
                         number_phone=FAKE.phone_number(),
-                        address=FAKE.address())
+                        address=FAKE.address(),
+                        date_registration=FAKE.date())
         client.save()
 
     @staticmethod
@@ -60,9 +65,9 @@ class Product(models.Model):
 
     @staticmethod
     def add_new_product():
-        product = Product(name='Какой-то продукт',
+        product = Product(name=FAKE.text(max_nb_chars=10),
                           description=FAKE.text(max_nb_chars=30),
-                          price=randint(20, 40)/0.2,
+                          price=randint(20, 40) / 0.2,
                           quantity=randint(10, 20))
         product.save()
         return product
@@ -73,7 +78,6 @@ class Product(models.Model):
         product.name = 'Теперь другой продукт'
         product.save()
         return product
-
 
     @staticmethod
     def delete_product(some_id):
@@ -99,7 +103,8 @@ class Order(models.Model):
         products = choices(Product.objects.all(), k=5)
         price = sum([i.price for i in products])
         order = Order(client=choice(Client.objects.all()),
-                      sum_of_order=price)
+                      sum_of_order=price,
+                      date_order=FAKE.date_between_dates(date.today() - timedelta(days=365), date.today()))
         order.save()
         order.product.set(products)
 
@@ -130,6 +135,22 @@ class Order(models.Model):
         order = Order.objects.get(pk=some_id)
         order.delete()
         return f'Order with id {some_id} was deleted'
+
+    @staticmethod
+    def get_orders_in_range_date(some_point):
+        match some_point:
+            case 1:
+                list_orders = (Order.objects.order_by('date_order').
+                               filter(date_order__gte=date.today() - timedelta(days=7)))
+                return list_orders
+            case 2:
+                list_orders = (Order.objects.order_by('date_order').
+                               filter(date_order__gte=date.today() - timedelta(days=30)))
+                return list_orders
+            case 3:
+                list_orders = (Order.objects.order_by('date_order').
+                               filter(date_order__gte=date.today() - timedelta(days=365)))
+                return list_orders
 
     def __str__(self):
         return f'{self.client} was create order {self.pk} with {self.product}. Price: {self.sum_of_order}'

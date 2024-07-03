@@ -1,0 +1,48 @@
+{% extends 'secondapp/base.html' %}
+
+{% block title %}
+Main
+{% endblock %}
+
+{% block content %}
+<h1>Привет, чтобы посмотреть статистику, нажми на кнопку</h1>
+
+<form action="{% url 'check_statistic' count=1 %}" method="get">
+    <button type="submit">Статистика за неделю</button>
+</form>
+<br>
+<form action="{% url 'check_statistic' count=2 %}" method="get">
+    <button type="submit">Статистика за месяц</button>
+</form>
+<br>
+<form action="{% url 'check_statistic' count=3 %}" method="get">
+    <button type="submit">Статистика за год</button>
+</form>
+<br><br><br><hr>
+<h2>Навигация по возможностям (Юзер)</h2>
+<form action="{% url 'fill_data_user' %}" method="get">
+    <button type="submit">Создать фейковых юзеров (9 шт)</button>
+</form>
+<br>
+<form action="{% url 'get_users' %}" method="get">
+    <button type="submit">Показать юзеров</button>
+</form>
+<br>
+<form action="{% url 'add_user' %}" method="get">
+    <button type="submit">Создать 1 фейкового юзера</button>
+</form>
+<br><br><br><hr>
+<h2>Навигация по возможностям (Продукты)</h2>
+<form action="{% url 'fill_data_product' %}" method="get">
+    <button type="submit">Создать фейковые продукты (9 шт)</button>
+</form>
+<br>
+<form action="{% url 'get_products' %}" method="get">
+    <button type="submit">Показать продукты</button>
+</form>
+<br><br><br><hr>
+<h2>Навигация по возможностям (Заказы)</h2>
+<form action="{% url 'fill_order_data' %}" method="get">
+    <button type="submit">Создать фейковые заказы (9 шт)</button>
+</form>
+{% endblock %}

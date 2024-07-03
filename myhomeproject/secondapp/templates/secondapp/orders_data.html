@@ -1,0 +1,17 @@
+{% extends 'secondapp/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<h2>Список заказов за указанное время:</h2>
+{% for i in names %}
+    <h3>Номер заказа: {{i.pk}} <br> Дата:{{i.date_order}}</h3>
+    <ol>
+    {% for j in i.product.all %}
+        <li>{{j.name}}</li>
+    {% endfor %}
+        </ol>
+{% endfor %}
+{% endblock %}

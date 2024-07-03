@@ -1,7 +1,13 @@
+import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Client, Product, Order, FAKE
 # Create your views here.
+
+
+def main(request):
+    return render(request, 'secondapp/main.html')
 
 
 def fill_users_data(request):
@@ -60,3 +66,14 @@ def update_order_products(request, some_id):
 
 def delete_order(request, some_id):
     return HttpResponse(Order.delete_order(some_id))
+
+
+def check_statistic(request, count):
+    list_orders = Order.get_orders_in_range_date(count)
+    context = {
+        'title': 'Data',
+        'names': list_orders,
+    }
+    return render(request, 'secondapp/orders_data.html', context)
+
+
