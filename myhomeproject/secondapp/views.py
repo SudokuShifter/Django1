@@ -70,6 +70,8 @@ def delete_order(request, some_id):
 
 def check_statistic(request, count):
     list_orders = Order.get_orders_in_range_date(count)
+    for order in list_orders:
+        order.unique_products = order.product.distinct()
     context = {
         'title': 'Data',
         'names': list_orders,
