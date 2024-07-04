@@ -9,7 +9,7 @@
 {% for i in names %}
     <h3>Номер заказа: {{i.pk}} <br> Дата:{{i.date_order}}</h3>
     <ol>
-    {% for j in i.product.all %}
+    {% for j in i.product.distinct %}
         <li>{{j.name}}</li>
     {% endfor %}
         </ol>
