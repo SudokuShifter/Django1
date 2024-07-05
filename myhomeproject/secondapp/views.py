@@ -1,8 +1,11 @@
 import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Client, Product, Order, FAKE
+from .forms import ProductForm
+
+
 # Create your views here.
 
 
@@ -39,7 +42,11 @@ def fill_product_data(request):
 
 
 def check_products(request):
-    return HttpResponse(Product.get_all_products())
+    context = {
+        'name': 'Продукты',
+        'products': Product.get_all_products()
+    }
+    return render(request, 'secondapp/products_data.html', context)
 
 
 def update_product_name(request, some_id):
@@ -79,3 +86,22 @@ def check_statistic(request, count):
     return render(request, 'secondapp/orders_data.html', context)
 
 
+def process_product_id(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        return redirect('change_product', product_id=product_id)
+    return redirect('main')
+
+
+def change_product(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('get_products')
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'secondapp/product_form.html', {'form': form})

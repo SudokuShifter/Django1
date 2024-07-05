@@ -15,7 +15,7 @@ class Client(models.Model):
     email = models.EmailField()
     number_phone = models.CharField(max_length=20)
     address = models.CharField(max_length=100)
-    date_registration = models.DateField(default=timezone.datetime.today())
+    date_registration = models.DateField(default=timezone.datetime.now())
 
     @staticmethod
     def get_all_users():
@@ -56,7 +56,8 @@ class Product(models.Model):
     description = models.TextField(default='Очень интересный товар')
     price = models.FloatField(default=0.0)
     quantity = models.IntegerField(default=0)
-    date_add_product = models.DateField(default=timezone.datetime.today())
+    date_add_product = models.DateField(default=timezone.datetime.now())
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
 
     @staticmethod
     def get_all_products():
@@ -69,7 +70,8 @@ class Product(models.Model):
         product = Product(name=FAKE.text(max_nb_chars=10),
                           description=FAKE.text(max_nb_chars=30),
                           price=randint(20, 40) / 0.2,
-                          quantity=randint(10, 20))
+                          quantity=randint(10, 20),
+                          image=FAKE.image())
         product.save()
         return product
 
@@ -94,7 +96,7 @@ class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     product = models.ManyToManyField(Product)
     sum_of_order = models.FloatField()
-    date_order = models.DateField(default=timezone.datetime.today())
+    date_order = models.DateField(default=timezone.datetime.now())
 
     @staticmethod
     def add_order():

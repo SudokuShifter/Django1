@@ -19,6 +19,15 @@ Main
     <button type="submit">Статистика за год</button>
 </form>
 <br><br><br><hr>
+<h2>Работа с продуктами</h2>
+<h4>Введите ID продукта для редактирования</h4>
+  <form method="post" action="{% url 'process_product_id' %}">
+    {% csrf_token %}
+    <label for="product_id">ID продукта:</label>
+    <input type="number" id="product_id" name="product_id" required>
+    <button type="submit">Отправить</button>
+  </form>
+<br><br><br><hr>
 <h2>Навигация по возможностям (Юзер)</h2>
 <form action="{% url 'fill_data_user' %}" method="get">
     <button type="submit">Создать фейковых юзеров (9 шт)</button>
@@ -45,4 +54,5 @@ Main
 <form action="{% url 'fill_order_data' %}" method="get">
     <button type="submit">Создать фейковые заказы (9 шт)</button>
 </form>
+
 {% endblock %}
