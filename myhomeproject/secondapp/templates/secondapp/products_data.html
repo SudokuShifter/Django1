@@ -1,0 +1,22 @@
+{% extends 'secondapp/base.html' %}
+
+{% block title %} {{ name }} {% endblock %}
+
+{% block content %}
+<div>
+    <h2>Продукты в наличии</h2>
+    <ol>
+        {% for product in products %}
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ image.name }}" width="100" height="100">
+        {% else %}
+        <p>Нет изображения</p>
+        {% endif %}
+        <li>Название: {{product.name}} <br> Описание: {{product.description}} <br> Цена: {{product.price}} <br>
+            Количество: {{product.quantity}}
+        </li>
+        <br>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}
