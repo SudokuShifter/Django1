@@ -71,7 +71,7 @@ class Product(models.Model):
                           description=FAKE.text(max_nb_chars=30),
                           price=randint(20, 40) / 0.2,
                           quantity=randint(10, 20),
-                          image=FAKE.image())
+                          image=FAKE.image_url())
         product.save()
         return product
 
