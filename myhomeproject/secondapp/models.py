@@ -20,7 +20,8 @@ class Client(models.Model):
     @staticmethod
     def get_all_users():
         clients = Client.objects.all()
-        if clients: return clients
+        if clients:
+            return clients
         return 'Clients not found'
 
     @staticmethod
@@ -137,20 +138,19 @@ class Order(models.Model):
         return f'Order with id {some_id} was deleted'
 
     @staticmethod
+    def get_orders_in_diapason(some_date):
+        return (Order.objects.order_by('date_order').
+                filter(date_order__gte=date.today() - timedelta(days=some_date)))
+
+    @staticmethod
     def get_orders_in_range_date(some_point):
         match some_point:
             case 1:
-                list_orders = (Order.objects.order_by('date_order').
-                               filter(date_order__gte=date.today() - timedelta(days=7)))
-                return list_orders
+                return Order.get_orders_in_diapason(7)
             case 2:
-                list_orders = (Order.objects.order_by('date_order').
-                               filter(date_order__gte=date.today() - timedelta(days=30)))
-                return list_orders
+                return Order.get_orders_in_diapason(30)
             case 3:
-                list_orders = (Order.objects.order_by('date_order').
-                               filter(date_order__gte=date.today() - timedelta(days=365)))
-                return list_orders
+                return Order.get_orders_in_diapason(365)
 
     def __str__(self):
         return f'{self.client} was create order {self.pk} with {self.product}. Price: {self.sum_of_order}'
